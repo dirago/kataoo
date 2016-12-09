@@ -1,9 +1,9 @@
 <?php
 
-class BlogLoader
-{
-    function load(String $path): array
-    {
+class BlogLoader {
+    public $data;
+
+    function load( String $path ): array {
 
     }
 }
@@ -12,23 +12,22 @@ class BlogLoader
  * Class Autor
  * description d'un rédacteur
  */
-class Autor
-{
-    public $id;
+class Autor {
+    private $id;
     public $firstName;
-    public $LastName;
+    public $lastName;
 
-    public function __construct(int $id, String $firstName, String $lastName)
-    {
-
+    public function __construct( int $id, String $firstName, String $lastName ) {
+        $this->id = $id;
+        $this->firstName = $id;
+        $this->lastName = $lastName;
     }
 
     /**
      * renvoie le nom complet : Bob Lee
      * @return String
      */
-    function getName(): String
-    {
+    function getName(): String {
 
     }
 
@@ -36,8 +35,7 @@ class Autor
      * renvoie le initial du prénom et nom complet : B.Lee
      * @return String
      */
-    function getShortName(): String
-    {
+    function getShortName(): String {
 
     }
 
@@ -45,8 +43,7 @@ class Autor
      * renvoie les initiales : B.L
      * @return String
      */
-    function getInitial(): String
-    {
+    function getInitial(): String {
 
     }
 }
@@ -54,26 +51,22 @@ class Autor
 /**
  * Class Article
  */
-class Article
-{
+class Article {
     public $id;
     public $title;
     public $content;
     public $autor;
     public $publicationDate;
 
-    public function __construct(String $title, String $content, Autor $autor, DateTime $date)
-    {
+    public function __construct( String $title, String $content, Autor $autor, DateTime $date ) {
 
     }
 }
 
 
-class ArticleRenderer
-{
+class ArticleRenderer {
 
-    public function __construct(Article $article)
-    {
+    public function __construct( Article $article ) {
 
     }
 
@@ -84,17 +77,14 @@ class ArticleRenderer
      * <p>par nom-court, le date </p>
      * @return String
      */
-    function render(): String
-    {
+    function render(): String {
 
     }
 }
 
-class Blog
-{
+class Blog {
 
-    public function __construct(String $title, array $articles)
-    {
+    public function __construct( String $title, array $articles ) {
     }
 
     /**
@@ -102,16 +92,14 @@ class Blog
      * <header>titre
      * @return String
      */
-    function displayHeader(): String
-    {
+    function displayHeader(): String {
 
     }
 
     /**
      * affiche la liste des titres d'articles sous formes de liens vers les articles
      */
-    function displayArticleList(): String
-    {
+    function displayArticleList(): String {
 
     }
 
@@ -120,8 +108,7 @@ class Blog
      * @param int $articleId
      * @return String
      */
-    function displayArticle(int $articleId): String
-    {
+    function displayArticle( int $articleId ): String {
 
     }
 
@@ -129,20 +116,18 @@ class Blog
      * renvoie un footer avec la date du jour
      * <footer></footer>
      */
-    function displayFooter()
-    {
+    function displayFooter() {
 
     }
 }
 
 // et pourquoi pas essayer de trouver 2/3 trucs à mettre dans un "helper"
-class ViewHelper
-{
+class ViewHelper {
 
 }
 
-$articles = new BlogLoader('blog.json');
-$blog = new Blog('Vive la POO', $articles);
+$articles = new BlogLoader( 'blog.json' );
+$blog = new Blog( 'Vive la POO', $articles );
 
 ?>
 
@@ -157,7 +142,7 @@ $blog = new Blog('Vive la POO', $articles);
 </head>
 <body>
 <?= $blog->displayHeader(); ?>
-<?= isset($_GET['articleId']) ? $blog->displayArticleList() : $blog->displayArticle($_GET['articleId']); ?>
+<?= isset( $_GET[ 'articleId' ] ) ? $blog->displayArticleList() : $blog->displayArticle( $_GET[ 'articleId' ] ); ?>
 <?= $blog->displayFooter(); ?>
 </body>
 </html>
