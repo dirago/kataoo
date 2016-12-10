@@ -14,21 +14,25 @@
     {
       "title":"Intro",
       "content":"La POO c'est...",
+      "articleId":1,
       "authorId":2,
       "date":"20161109"
     },{
       "title":"Les Classes",
       "content":"Une classe est...",
+      "articleId":2,
       "authorId":2,
       "date":"20161111"
     },{
       "title":"Le constructeur",
       "content":"Lorsqu'on instancie...",
+      "articleId":3,
       "authorId":1,
       "date":"20161112"
     },{
       "title":"Les Proprietés",
       "content":"Une classe peut définir des propriétés...",
+      "articleId":4,
       "authorId":1,
       "date":"20161115"
     }

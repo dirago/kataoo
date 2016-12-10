@@ -56,7 +56,7 @@ class Author {
      * @return String
      */
     function getShortName(): String {
-
+        return $this->firstName[0] . '.' . $this->lastName;
     }
 
     /**
@@ -64,7 +64,7 @@ class Author {
      * @return String
      */
     function getInitial(): String {
-
+        return $this->firstName[0] . '.' . $this->lastName[0];
     }
 }
 
@@ -72,24 +72,29 @@ class Author {
  * Class Article
  */
 class Article {
+    public $id;
     public $title;
     public $content;
     public $author;
     public $publicationDate;
 
-    public function __construct(String $title, String $content, Author $author, DateTime $date) {
+    public function __construct(int $id, String $title, String $content, Author $author, DateTime $date) {
+        $this->id = $id;
         $this->title = $title;
         $this->content = $content;
         $this->author = $author;
-        $this->publicationDate = $date;
+        $this->publicationDate = $date->format('d/m/Y');
     }
 }
 
 
 class ArticleRenderer {
+    public $article;
+    public $renderedArticle;
 
     public function __construct(Article $article) {
-
+        $this->article = $article;
+        echo $this->render();
     }
 
     /**
@@ -97,10 +102,14 @@ class ArticleRenderer {
      * <h2>titre</h2>
      * <p>article</p>
      * <p>par nom-court, le date </p>
-     * @return String
+     * @return void
      */
     function render(): String {
-
+        $this->renderedArticle .= '<p class="retour"><a href="./blog.php">RETOUR</a></p>';
+        $this->renderedArticle .= '<h2 class="titre">' . $this->article->title . '</h2>';
+        $this->renderedArticle .= '<p class="contenu">' . $this->article->content . '</p>';
+        $this->renderedArticle .= '<p class="signature">par ' . $this->article->author->getShortName() . ', le ' . $this->article->publicationDate . '</p>';
+        return $this->renderedArticle;
     }
 }
 
@@ -108,11 +117,13 @@ class Blog {
     public $title;
     public $data;
     public $authors;
+    private $renderer;
 
     public function __construct(String $title, array $articles) {
         $this->title = $title;
         $this->data = $articles;
         $this->authors = $this->getAuthors($this->data);
+        $this->articles = $this->getArticles($this->data);
     }
 
     /**
@@ -126,18 +137,13 @@ class Blog {
 
     /**
      * affiche la liste des titres d'articles sous formes de liens vers les articles
-     */
+        */
     function displayArticleList(): String {
-        $articles = $this->getArticles($this->data);
-        foreach ($articles as $article){
-            foreach ($this->authors as $author) {
-                if ($article['authorId'] == $author->id){
-                    $articleAuthor = $author;
-                }
-            }
-            $newArticle = new Article($article['title'], $article['content'], $articleAuthor, new DateTime($article['date']));
-            return '<p>'.$newArticle->title.'</p>';
+        $renderedArticlesList = '';
+        foreach ($this->articles as $article) {
+            $renderedArticlesList .= '<p><a class="preview" href="?articleId=' . $article->id . '">' . $article->content . '</a></p>';
         }
+        return $renderedArticlesList;
     }
 
     /**
@@ -145,12 +151,12 @@ class Blog {
      * @param int $articleId
      * @return String
      */
-    function displayArticle(int $articleId): String {
-//        $articles = $this->getArticles($this->data);
-//        foreach ($articles as $article){
-//            $newArticle = new Article($article['title'], $article['content'], $article['authorId'], $article['date']);
-//
-//        }
+    function displayArticle(int $articleId) {
+        foreach ($this->articles as $article) {
+            if ($articleId == $article->id) {
+                $this->renderer = new articleRenderer($article);
+            }
+        }
     }
 
     /**
@@ -160,7 +166,7 @@ class Blog {
     function displayFooter() {
         return "
             <footer>
-                <p>Nous sommes le ".strftime("%A %d %B %Y")."</p>
+                <p>Nous sommes le " . strftime("%A %d %B %Y") . "</p>
                 <p>Simplon.co Lyon >>> <a href='https://github.com/dirago'>dirago</a></p>
             </footer>
             ";
@@ -169,18 +175,18 @@ class Blog {
     /**
      * extracting authors array from original array
      * @param array $array
-     * @return Author
+     * @return array
      */
     public function getAuthors(array $array): array {
-        if (isset($array['authors'])) {
-            $authors = $array['authors'];
-            $authorsArray = Array();
-            foreach ($authors as $author) {
-                array_push($authorsArray, new Author($author['id'], $author['firstname'], $author['lastname']));
+            if (isset($array['authors'])) {
+                $authors = $array['authors'];
+                $authorsArray = Array();
+                foreach ($authors as $author) {
+                    array_push($authorsArray, new Author($author['id'], $author['firstname'], $author['lastname']));
+                }
+                return $authorsArray;
             }
-            return $authorsArray;
         }
-    }
 
     /**
      * extracting articles array from original array
@@ -188,10 +194,20 @@ class Blog {
      * @return array of articles
      */
     public function getArticles(array $array): array {
-        if (isset($array['articles'])) {
-            return $array['articles'];
+            if (isset($array['articles'])) {
+                $articlesArray = Array();
+                foreach ($array['articles'] as $article) {
+                    foreach ($this->authors as $author) {
+                        if ($article['authorId'] == $author->id) {
+                            $articleAuthor = $author;
+                        }
+                    }
+                    $newArticle = new Article($article['articleId'], $article['title'], $article['content'], $articleAuthor, new DateTime($article['date']));
+                    array_push($articlesArray, $newArticle);
+                }
+                return $articlesArray;
+            }
         }
-    }
 }
 
 // et pourquoi pas essayer de trouver 2/3 trucs à mettre dans un "helper"
@@ -218,7 +234,9 @@ $blog = new Blog('Vive la POO', $articles);
 </head>
 <body>
 <?= $blog->displayHeader(); ?>
-<?= !isset($_GET['articleId']) ? $blog->displayArticleList() : $blog->displayArticle($_GET['articleId']); ?>
+<main>
+    <?= !isset($_GET['articleId']) ? $blog->displayArticleList() : $blog->displayArticle($_GET['articleId']); ?>
+</main>
 <?= $blog->displayFooter(); ?>
 </body>
 </html>
