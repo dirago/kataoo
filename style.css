@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 1em; }
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; }
+
+header {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  background-color: #942151;
+  -webkit-box-shadow: 0 0 21px 0px #2a0048;
+  -moz-box-shadow: 0 0 21px 0px #2a0048;
+  box-shadow: 0 0 21px 0px #2a0048;
+  color: white;
+  padding: 0 100px;
+  font-size: 2em;
+  font-family: "Dosis", "Helvetica Neue", "Helvetica", sans-serif;
+  font-weight: 700;
+  margin-bottom: 40px; }
+
+main {
+  padding: 0 100px;
+  font-family: "Nunito Sans", "Helvetica Neue", "Helvetica", sans-serif; }
+  main p {
+    margin: 40px 0; }
+  main .preview {
+    font-size: 2em;
+    text-decoration: none;
+    color: #940848;
+    padding-bottom: 5px;
+    border-bottom: 1px solid; }
+  main .retour {
+    margin-bottom: 100px; }
+    main .retour a, main .retour a:visited, main .retour a:focus {
+      color: #2a0048;
+      text-decoration: none; }
+  main .titre {
+    font-size: 3em; }
+  main .contenu {
+    padding-left: 20px;
+    border-left: 1px solid #942151; }
+  main .signature {
+    font-style: italic; }
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 50px;
+  height: 100px;
+  color: white;
+  background-color: #942151;
+  -webkit-box-shadow: 0 0 10px 0px #2a0048;
+  -moz-box-shadow: 0 0 10px 0px #2a0048;
+  box-shadow: 0 0 10px 0px #2a0048;
+  font-family: "Nunito Sans", "Helvetica Neue", "Helvetica", sans-serif;
+  font-weight: 300;
+  margin-top: 50px; }
+  footer p {
+    margin: 5px 0; }
+    footer p a {
+      text-decoration: none;
+      color: #fff; }
+
+/*# sourceMappingURL=style.css.map */
