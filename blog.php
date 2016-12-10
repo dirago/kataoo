@@ -137,7 +137,7 @@ class Blog {
 
     /**
      * affiche la liste des titres d'articles sous formes de liens vers les articles
-        */
+     */
     function displayArticleList(): String {
         $renderedArticlesList = '';
         foreach ($this->articles as $article) {
@@ -178,15 +178,15 @@ class Blog {
      * @return array
      */
     public function getAuthors(array $array): array {
-            if (isset($array['authors'])) {
-                $authors = $array['authors'];
-                $authorsArray = Array();
-                foreach ($authors as $author) {
-                    array_push($authorsArray, new Author($author['id'], $author['firstname'], $author['lastname']));
-                }
-                return $authorsArray;
+        if (isset($array['authors'])) {
+            $authors = $array['authors'];
+            $authorsArray = Array();
+            foreach ($authors as $author) {
+                array_push($authorsArray, new Author($author['id'], $author['firstname'], $author['lastname']));
             }
+            return $authorsArray;
         }
+    }
 
     /**
      * extracting articles array from original array
@@ -194,20 +194,20 @@ class Blog {
      * @return array of articles
      */
     public function getArticles(array $array): array {
-            if (isset($array['articles'])) {
-                $articlesArray = Array();
-                foreach ($array['articles'] as $article) {
-                    foreach ($this->authors as $author) {
-                        if ($article['authorId'] == $author->id) {
-                            $articleAuthor = $author;
-                        }
+        if (isset($array['articles'])) {
+            $articlesArray = Array();
+            foreach ($array['articles'] as $article) {
+                foreach ($this->authors as $author) {
+                    if ($article['authorId'] == $author->id) {
+                        $articleAuthor = $author;
                     }
-                    $newArticle = new Article($article['articleId'], $article['title'], $article['content'], $articleAuthor, new DateTime($article['date']));
-                    array_push($articlesArray, $newArticle);
                 }
-                return $articlesArray;
+                $newArticle = new Article($article['articleId'], $article['title'], $article['content'], $articleAuthor, new DateTime($article['date']));
+                array_push($articlesArray, $newArticle);
             }
+            return $articlesArray;
         }
+    }
 }
 
 // et pourquoi pas essayer de trouver 2/3 trucs à mettre dans un "helper"
