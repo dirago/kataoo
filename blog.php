@@ -8,21 +8,13 @@ setlocale(LC_TIME, 'fr_FR');
  * chargeur de données pour implémenter le blog
  */
 class BlogLoader {
-    /**
-     * BlogLoader constructor.
-     * @param $url
-     */
-    public function __construct(String $url) {
-        $this->url = $url;
-        $this->loadedData = $this->loadFromJSON($this->url);
-    }
 
     /**
      * loading data(array) from json file
      * @param String $path
      * @return array
      */
-    public function loadFromJSON(String $path): array {
+    static function loadFromJSON(String $path): array {
         $data = file_get_contents($path);
         return json_decode($data, true);
     }
@@ -215,8 +207,7 @@ class ViewHelper {
 
 }
 
-$blogLoader = new BlogLoader('blog.json');
-$articles = $blogLoader->loadedData;
+$articles = BlogLoader::loadFromJSON('blog.json');
 $blog = new Blog('Vive la POO', $articles);
 
 ?>
