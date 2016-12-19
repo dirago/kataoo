@@ -14,7 +14,7 @@ class BlogLoader {
      * @param String $path
      * @return array
      */
-    static function loadFromJSON(String $path): array {
+    static public function loadFromJSON(String $path): array {
         $data = file_get_contents($path);
         return json_decode($data, true);
     }
@@ -94,7 +94,7 @@ class ArticleRenderer {
      * <h2>titre</h2>
      * <p>article</p>
      * <p>par nom-court, le date </p>
-     * @return void
+     * @return String
      */
     function render(): String {
         $this->renderedArticle .= '<p class="retour"><a href="./blog.php">RETOUR</a></p>';
@@ -109,7 +109,7 @@ class Blog {
     public $title;
     public $data;
     public $authors;
-    private $renderer;
+    public $articles;
 
     public function __construct(String $title, array $articles) {
         $this->title = $title;
